@@ -21,6 +21,7 @@ define_language! {
 
         "sin" = Sin(Id),
         "cos" = Cos(Id),
+        "tan" = Tan(Id),
 
         Constant(Constant),
         Symbol(Symbol),
