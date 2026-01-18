@@ -555,3 +555,18 @@ fn test_medium_intersect() {
         egraph3.add_expr(&"(+ (* k pi) (* k pi))".parse().unwrap())
     );
 }
+
+#[test]
+fn test_const_folding() {
+    let expr: RecExpr<Math> = "(+ a (* 2 (+ 2 2)))".parse().unwrap();
+    let mut runner: Runner<Math, ConstantFold> = Runner::new(ConstantFold {})
+                                                .with_explanations_enabled()
+                                                .with_expr(&expr)
+                                                .run(&rules());
+    let root = runner.roots[0];
+    let extractor = Extractor::new(&runner.egraph, AstSize);
+    let (best_cost, best) = extractor.find_best(root);
+    let best_string = best.to_string();
+    println!("{}", best_string);
+    println!("{}", runner.explain_equivalence(&expr, &best).get_flat_string());
+}
